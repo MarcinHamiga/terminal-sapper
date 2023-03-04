@@ -5,27 +5,31 @@ from time import sleep
 import platform
 import os
 
-def clear():
-    if platform.system().lower() == "linux":
+def clear():    # Czyści ekran, nic takiego
+    if platform.system().lower() == "linux":    # Sprawdza na jakim systemie operacyjnym jesteśmy. Jeżeli to linux, to używa systemowej komendy clear
         os.system("clear")
-    if platform.system().lower() == "windows":
+    if platform.system().lower() == "windows":  # Jeżeli to winda, to używa upośledzonego cls
         os.system("cls")
 
 def get_number(a: int, b: int, text: str) -> int:
-    while True:
-        try:
-            number = int(input(text))
+    while True: 
+        try:    # Będziemy sobie testować, czy coś się nie wysypie.
+            number = int(input(text))   # Se bierzemy input od usera i go rzutujemy na inta. Tak o fajnie.
             if a <= number <= b:
                 return number
             else:
                 print("Enter a valid number!")
                 sleep(1)
+        # Sprawdzamy, czy input usera może w ogóle zostać zrzutowany na inta. Jeżeli ni, to powód jest nieważny,
+        # lecimy tutaj i karcimy usera, ze ma wpisac inta
         except ValueError:
             print("Enter an integer!")
             sleep(1)
+        # To jest ważne, bo jak bez tego zachce nam się robić pusty except, to nawet ctrl + c nie pozwoli nam wyjśc (ctrl + c wywołuje KeyboardInterrupt exception)
         except KeyboardInterrupt:
             clear()
             exit()
+        # Jak wywali się coś, czego nie przewidujemy, to odpala się to, ez.
         except:
             print("Something went wrong. Please try again.")
             sleep(2)
@@ -36,7 +40,7 @@ def lay_mines(a: int, b: int, mines_num: int) -> set:
     for x in range(0, mines_num + 1):
         mines.add((randint(0, a-1), randint(0, b-1)))   # Set ma metodę add zamiast append. Do zapamiętania.
     return mines
-    
+
 def number_of_neighbouring_mines(x: int, y: int, board: list) -> int:
     if board[x][y] == "B":
         return -1
@@ -98,7 +102,7 @@ def reveal_fields(m: int, n: int, x: int, y: int, board: list, mask: list):
 def print_board(m: int, n: int, board: list, mask: list):
     rows = 1
     cols = 1
-    print(f"{'':<3}", end="")   # Dużo printów, a generalnie <3 pozwala nam na sztywno ustawić, że wyrażenie w klamerce ma zostać zapisane na trzech miejscach w terminalu.
+    print(f"{'':<3}", end="")   # Dużo printów, a generalnie <3 pozwala nam na sztywno ustawić, że wyrażenie w klamerce ma zostać zapisane na trzech pozycjach w terminalu.
     for x in range(m):
         print(f"{Fore.RED}{f'{cols}':<3}{Style.RESET_ALL}", end="")    # Inna liczba, np <4 ustawi na sztywno, że ma zająć 4 miejsca.
         cols += 1
