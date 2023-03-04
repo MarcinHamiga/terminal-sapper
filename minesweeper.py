@@ -1,5 +1,6 @@
 from random import randint
 from copy import deepcopy
+from colorama import Fore, Style, Back
 
 def get_number(a: int, b: int, text: str) -> int:
     while True:
@@ -78,18 +79,18 @@ def print_board(m: int, n: int, board: list, mask: list):
     cols = 1
     print(f"{'':<3}", end="")   # Dużo printów, a generalnie <3 pozwala nam na sztywno ustawić, że wyrażenie w klamerce ma zostać zapisane na trzech miejscach w terminalu.
     for x in range(m):
-        print(f"{f'{cols}':<3}", end="")    # Inna liczba, np <4 ustawi na sztywno, że ma zająć 4 miejsca.
+        print(f"{Fore.RED}{f'{cols}':<3}{Style.RESET_ALL}", end="")    # Inna liczba, np <4 ustawi na sztywno, że ma zająć 4 miejsca.
         cols += 1
     print()
     for row_b, row_m in zip(board, mask):   # Zipujemy sobie dwie listy, zeby móc iterować po obu na raz.
-        print(f"{f'{rows}':<3}", end="")
+        print(f"{Fore.RED}{f'{rows}':<3}{Style.RESET_ALL}", end="")
         rows += 1
         for col_b, col_m in zip(row_b, row_m):
             if col_m == 0:
-                print(f"{'?':<3}", end="")
+                print(f"{Fore.BLUE}{'?':<3}{Style.RESET_ALL}", end="")
             else:
                 if col_b == 0:
-                    print(f"{' ':<3}", end="")
+                    print(f"{Back.GREEN}{' ':<3}{Style.RESET_ALL}", end="")
                 else:
-                    print(f"{col_b:<3}", end="")
+                    print(f"{Fore.CYAN}{col_b:<3}{Style.RESET_ALL}", end="")
         print()
