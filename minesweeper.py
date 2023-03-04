@@ -1,21 +1,42 @@
 from random import randint
 from copy import deepcopy
 from colorama import Fore, Style, Back
+from time import sleep
+import platform
+import os
+
+def clear():
+    if platform.system().lower() == "linux":
+        os.system("clear")
+    if platform.system().lower() == "windows":
+        os.system("cls")
 
 def get_number(a: int, b: int, text: str) -> int:
     while True:
-        number = int(input(text))
-        if a <= number <= b:
-            return number
-        else:
-            print("Enter a valid number!")
+        try:
+            number = int(input(text))
+            if a <= number <= b:
+                return number
+            else:
+                print("Enter a valid number!")
+                sleep(1)
+        except ValueError:
+            print("Enter an integer!")
+            sleep(1)
+        except KeyboardInterrupt:
+            clear()
+            exit()
+        except:
+            print("Something went wrong. Please try again.")
+            sleep(2)
+        
 
 def lay_mines(a: int, b: int, mines_num: int) -> set:
     mines = set()   # Tworzymy nowy set (Nie, zrobienie tego klamerkami NIE działa. Tworzycie wtedy słownik a nie set.)
     for x in range(0, mines_num + 1):
         mines.add((randint(0, a-1), randint(0, b-1)))   # Set ma metodę add zamiast append. Do zapamiętania.
     return mines
-
+    
 def number_of_neighbouring_mines(x: int, y: int, board: list) -> int:
     if board[x][y] == "B":
         return -1
