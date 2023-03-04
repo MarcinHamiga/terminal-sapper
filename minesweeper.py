@@ -1,13 +1,39 @@
 from random import randint
 from copy import deepcopy
+from colorama import Fore, Style, Back
+from time import sleep
+import platform
+import os
+
+def clear():    # Czyści ekran, nic takiego
+    if platform.system().lower() == "linux":    # Sprawdza na jakim systemie operacyjnym jesteśmy. Jeżeli to linux, to używa systemowej komendy clear
+        os.system("clear")
+    if platform.system().lower() == "windows":  # Jeżeli to winda, to używa upośledzonego cls
+        os.system("cls")
 
 def get_number(a: int, b: int, text: str) -> int:
-    while True:
-        number = int(input(text))
-        if a <= number <= b:
-            return number
-        else:
-            print("Enter a valid number!")
+    while True: 
+        try:    # Będziemy sobie testować, czy coś się nie wysypie.
+            number = int(input(text))   # Se bierzemy input od usera i go rzutujemy na inta. Tak o fajnie.
+            if a <= number <= b:
+                return number
+            else:
+                print("Enter a valid number!")
+                sleep(1)
+        # Sprawdzamy, czy input usera może w ogóle zostać zrzutowany na inta. Jeżeli ni, to powód jest nieważny,
+        # lecimy tutaj i karcimy usera, ze ma wpisac inta
+        except ValueError:
+            print("Enter an integer!")
+            sleep(1)
+        # To jest ważne, bo jak bez tego zachce nam się robić pusty except, to nawet ctrl + c nie pozwoli nam wyjśc (ctrl + c wywołuje KeyboardInterrupt exception)
+        except KeyboardInterrupt:
+            clear()
+            exit()
+        # Jak wywali się coś, czego nie przewidujemy, to odpala się to, ez.
+        except:
+            print("Something went wrong. Please try again.")
+            sleep(2)
+        
 
 def lay_mines(a: int, b: int, mines_num: int) -> set:
     mines = set()   # Tworzymy nowy set (Nie, zrobienie tego klamerkami NIE działa. Tworzycie wtedy słownik a nie set.)
@@ -76,20 +102,20 @@ def reveal_fields(m: int, n: int, x: int, y: int, board: list, mask: list):
 def print_board(m: int, n: int, board: list, mask: list):
     rows = 1
     cols = 1
-    print(f"{'':<3}", end="")   # Dużo printów, a generalnie <3 pozwala nam na sztywno ustawić, że wyrażenie w klamerce ma zostać zapisane na trzech miejscach w terminalu.
+    print(f"{'':<3}", end="")   # Dużo printów, a generalnie <3 pozwala nam na sztywno ustawić, że wyrażenie w klamerce ma zostać zapisane na trzech pozycjach w terminalu.
     for x in range(m):
-        print(f"{f'{cols}':<3}", end="")    # Inna liczba, np <4 ustawi na sztywno, że ma zająć 4 miejsca.
+        print(f"{Fore.RED}{f'{cols}':<3}{Style.RESET_ALL}", end="")    # Inna liczba, np <4 ustawi na sztywno, że ma zająć 4 miejsca.
         cols += 1
     print()
     for row_b, row_m in zip(board, mask):   # Zipujemy sobie dwie listy, zeby móc iterować po obu na raz.
-        print(f"{f'{rows}':<3}", end="")
+        print(f"{Fore.RED}{f'{rows}':<3}{Style.RESET_ALL}", end="")
         rows += 1
         for col_b, col_m in zip(row_b, row_m):
             if col_m == 0:
-                print(f"{'?':<3}", end="")
+                print(f"{Fore.BLUE}{'?':<3}{Style.RESET_ALL}", end="")
             else:
                 if col_b == 0:
-                    print(f"{' ':<3}", end="")
+                    print(f"{Back.GREEN}{' ':<3}{Style.RESET_ALL}", end="")
                 else:
-                    print(f"{col_b:<3}", end="")
+                    print(f"{Fore.CYAN}{col_b:<3}{Style.RESET_ALL}", end="")
         print()

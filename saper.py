@@ -18,10 +18,7 @@ def saper():
         x = get_number(0, m, f"Enter a row (1-{m}): ") - 1
         y = get_number(0, n, f"Enter a column (1-{n}): ") - 1
 
-        if platform.system().lower() == "linux":
-            os.system("clear")
-        if platform.system().lower() == "windows":
-            os.system("cls")
+        clear()
 
         lose = reveal_fields(m, n, x, y, board, mask)
         if lose == -1:
