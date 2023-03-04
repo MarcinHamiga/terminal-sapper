@@ -70,7 +70,7 @@ def create_board(m: int, n: int, mines: set):
 
     # Tutaj dzieje się kongo
     for i, row in enumerate(board): 
-        for j, col in enumerate(row):
+        for j, _ in enumerate(row):
             number = number_of_neighbouring_mines(i, j, board) # Szukamy ile bomb ma dookoła siebie każde pole
             if number == -1:
                 continue    # Jak pole jest bombą to nic nie robimy, zostawiamy tam ładnie 'B'
@@ -103,7 +103,7 @@ def print_board(m: int, n: int, board: list, mask: list):
     rows = 1
     cols = 1
     print(f"{'':<3}", end="")   # Dużo printów, a generalnie <3 pozwala nam na sztywno ustawić, że wyrażenie w klamerce ma zostać zapisane na trzech pozycjach w terminalu.
-    for x in range(m):
+    for x in range(n):
         print(f"{Fore.RED}{f'{cols}':<3}{Style.RESET_ALL}", end="")    # Inna liczba, np <4 ustawi na sztywno, że ma zająć 4 miejsca.
         cols += 1
     print()

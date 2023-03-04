@@ -24,4 +24,5 @@ def saper():
         if lose == -1:
             is_running = False
         print_board(m, n, board, mask)
+    input("---press Enter to exit---")
 saper()
