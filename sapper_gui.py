@@ -16,8 +16,25 @@ class Minesweeper:
      
         self.num_mines = 10
         
-        curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
+        curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_BLACK)
+        curses.init_pair(1, curses.COLOR_RED, curses.COLOR_WHITE)
+        
+        self.colors = {
+            "cursor" : curses.color_pair(1),
+            0 : curses.color_pair(2),
+            1 : curses.color_pair(3),
+            2 : curses.color_pair(3),
+            3 : curses.color_pair(3),
+            4 : curses.color_pair(3),
+            5 : curses.color_pair(3),
+            6 : curses.color_pair(3),
+            7 : curses.color_pair(3),
+            8 : curses.color_pair(3)
+            
+        }
+        
+        
         
         self._spacebar = ord(" ")
         self._e_key = ord("e")
@@ -94,12 +111,12 @@ class Minesweeper:
                 for j, cols in enumerate(rows):
                     if (i, j) == (cursor_row, cursor_col):
                         if mask[i][j] == 1:
-                            self.ROOT.addstr(i, spacing, f" {cols} ", curses.color_pair(1))
+                            self.ROOT.addstr(i, spacing, f" {cols} ", self.colors["cursor"])
                         else:
-                            self.ROOT.addstr(i, spacing, f" ? ", curses.color_pair(1))
+                            self.ROOT.addstr(i, spacing, f" ? ", self.colors["cursor"])
                     else:
                         if mask[i][j] == 1:
-                            self.ROOT.addstr(i, spacing, f" {cols} ", curses.color_pair(2))
+                            self.ROOT.addstr(i, spacing, f" {cols} ", self.colors[cols])
                         else:
                             self.ROOT.addstr(i, spacing, f" ? ")
                     spacing += 3
@@ -127,6 +144,7 @@ class Minesweeper:
                 case self._e_key:
                     game_on = False
             self.ROOT.refresh()
+            
 scr = curses.initscr()
 def main(scr):
     game = Minesweeper(scr)
