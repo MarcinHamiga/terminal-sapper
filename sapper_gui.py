@@ -42,7 +42,6 @@ class Minesweeper:
         
     def start_screen(self):
         self.ROOT.nodelay(True)
-        key_a = ord('a')
         option = 1
         start_scr = True
         while start_scr:
@@ -67,7 +66,8 @@ class Minesweeper:
             self.ROOT.addstr(6, 0, "When in-game, use the spacebar to reveal the currently highlighted field.")
             usr_input = self.ROOT.getch()
             match usr_input:
-                case curses.KEY_RIGHT:
+                
+                case curses.KEY_RIGHT:  # To, co dzieje się kiedy wciśniemy prawą strzałkę
                     if self.rows < self.MAX_ROWS and option == 1:
                         self.rows += 1
                     elif self.cols < self.MAX_COLS and option == 2:
@@ -75,7 +75,8 @@ class Minesweeper:
                     elif self.num_mines < max_mines and option == 3:
                         self.num_mines += 1
                     self.ROOT.clear()
-                case curses.KEY_LEFT:
+                    
+                case curses.KEY_LEFT:   # To, co dzieje się kiedy wciśniemy lewą strzałkę
                     if self.rows > self.MIN_ROWS and option == 1:
                         self.rows -= 1
                     elif self.cols > self.MIN_COLS and option == 2:
@@ -83,17 +84,23 @@ class Minesweeper:
                     elif self.num_mines > 10 and option == 3:
                         self.num_mines -= 1
                     self.ROOT.clear()
-                case curses.KEY_UP:
+                    
+                case curses.KEY_UP: # To, co dzieje się kiedy wciśniemy strzałkę do góry
                     if option > 1:
                         option -= 1
                     self.ROOT.clear()
-                case curses.KEY_DOWN:
+                    
+                case curses.KEY_DOWN:   # To, co dzieje się kiedy wciśniemy strzałkę w dół
                     if option < 3:
                         option += 1
                     self.ROOT.clear()
+                    
                 case self._a_key:
                     start_scr = False
                     self.ROOT.clear()
+                    
+                case _:
+                    continue
                     
                     
     def game_screen(self):
