@@ -39,7 +39,7 @@ def lay_mines(a: int, b: int, mines_num: int) -> set:
     mines = set()   # Tworzymy nowy set (Nie, zrobienie tego klamerkami NIE działa. Tworzycie wtedy słownik a nie set.)
     for x in range(0, mines_num + 1):
         mines.add((randint(0, a-1), randint(0, b-1)))   # Set ma metodę add zamiast append. Do zapamiętania.
-    return mines
+    return mines, len(mines)
 
 def number_of_neighbouring_mines(x: int, y: int, board: list) -> int:
     if board[x][y] == "B":
