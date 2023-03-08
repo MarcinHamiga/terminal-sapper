@@ -101,19 +101,9 @@ class Minesweeper:
                     
                 case _:
                     continue
-                    
-                    
-    def game_screen(self):
-        self.ROOT.nodelay(True)
-        mines = lay_mines(self.rows, self.cols, self.num_mines)
-
-        board, mask = create_board(self.rows, self.cols, mines)
-        game_on = True
-        cursor_row = 0
-        cursor_col = 0
-
-        while game_on:
-            for i, rows in enumerate(board):
+                  
+    def print_board(self, board, mask, cursor_row, cursor_col):
+        for i, rows in enumerate(board):
                 spacing = 0
                 for j, cols in enumerate(rows):
                     if (i, j) == (cursor_row, cursor_col):
@@ -127,6 +117,18 @@ class Minesweeper:
                         else:
                             self.ROOT.addstr(i, spacing, f" ? ")
                     spacing += 3
+                    
+    def game_screen(self):
+        self.ROOT.nodelay(True)
+        mines, final_num_mines = lay_mines(self.rows, self.cols, self.num_mines)
+
+        board, mask = create_board(self.rows, self.cols, mines)
+        game_on = True
+        cursor_row = 0
+        cursor_col = 0
+
+        while game_on:
+            self.print_board(board, mask, cursor_row, cursor_col)
             usr_input = self.ROOT.getch()
             match usr_input:
                 case curses.KEY_UP:
@@ -144,12 +146,22 @@ class Minesweeper:
                 case self._spacebar:
                     lose = reveal_fields(self.rows, self.cols, cursor_row, cursor_col, board, mask)
                     if lose == -1:
+                        self.print_board(board, mask, cursor_row, cursor_col)
+                        self.ROOT.refresh()
                         self.ROOT.addstr(self.rows + 2, 0, "You lost!")
                         self.ROOT.refresh()
                         curses.napms(2000)
                         game_on = False
                 case self._e_key:
                     game_on = False
+            count = 0
+            for row in mask:
+                for col in row:
+                    if col == 1:
+                        count += 1
+                    if self.rows * self.cols - final_num_mines == count:
+                        self.ROOT.addstr(self.rows + 2, 0, "You win!")
+                        game_on = False
             self.ROOT.refresh()
             
 scr = curses.initscr()

@@ -13,6 +13,11 @@ def sapper():
     mines, final_num_mines = lay_mines(m, n, num_mines)
 
     board, mask = create_board(m, n, mines)
+    with open("board.txt", "w", encoding="UTF-8") as file:
+        for row in board:
+            for col in row:
+                file.write(f"{col} ")
+            file.write("\n")
     print_board(m, n, board, mask)
     while is_running:
         x = get_number(0, m, f"Enter a row (1-{m}): ") - 1
